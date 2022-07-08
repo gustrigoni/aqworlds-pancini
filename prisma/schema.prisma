@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model Servers {
+  id        Int       @id
+  name      String
+  ip        String
+  online    Boolean   @default(true)
+  upgrade   Boolean   @default(false)
+  chat      Boolean   @default(true)
+  count     Int       @default(1)
+  max       Int       @default(2500)
+  uptime    String?   @default("0")
+  MOTD      String    @default("Hello world!")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("servers")
+}
+
+model Items {
+  id           Int       @id
+  name         String
+  description  String?
+  cost         Int       @default(0)
+  file         String?
+  linkage      String?
+  type         String    @db.VarChar(15)
+  equipment    String    @db.VarChar(15)
+  icon         String    @db.VarChar(15)
+  coins        Boolean   @default(false)
+  upgrade      Boolean   @default(false)
+  staff        Boolean   @default(false)
+  temporary    Boolean   @default(false)
+  house        Boolean   @default(false)
+  enhacementId Int       @default(1) @map("enhacement_id")
+  factionId    Int?      @map("faction_id")
+  classId      Int?      @map("class_id")
+  dps          Int       @default(0)
+  level        Int       @default(1)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime? @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  UsersItems UsersItems[]
+  @@map("items")
+}
+
+model Users {
+  id             Int       @id
+  username       String    @unique() @db.VarChar(45)
+  password       String    @unique() @db.VarChar(255)
+  access         Int       @default(1)
+  activationFlag Int       @default(5) @map("activation_flag")
+  age            Int       @default(13)
+  gender         String    @default("M")
+  email          String    @db.VarChar(255)
+  level          Int       @default(1)
+  gold           Int       @default(0)
+  coins          Int       @default(0)
+  experience     Int       @default(0)
+  colorHair      Int       @default(0) @map("color_hair")
+  colorSkin      Int       @default(0) @map("color_flag")
+  colorEye       Int       @default(0) @map("color_eye")
+  colorBase      Int       @default(0) @map("color_base")
+  colorTrim      Int       @default(0) @map("color_trim")
+  colorAccessory Int       @default(0) @map("color_acessory")
+  upgradeExpire  DateTime? @map("upgrade_expired_at")
+  bankSlots      Int       @default(5) @map("bank_slots")
+  houseSlots     Int       @default(20) @map("house_slots")
+  bagSlots       Int       @default(45) @map("bag_slots")
+  hairId         Int?      @map("hair_id")
+  hairFile       String?   @map("hair_file")
+  hairName       String?   @map("hair_name")
+  lastArea       String?   @map("last_area")
+  currentServer  String?   @map("current_server") @db.VarChar(60)
+  createdAt      DateTime  @map("created_at")
+  updatedAt      DateTime? @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  UsersFactions UsersFactions[]
+  UsersItems    UsersItems[]
+  @@map("users")
+}
+
+model Factions {
+  id        Int       @id
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  UsersFactions UsersFactions[]
+  @@map("factions")
+}
+
+model UsersFactions {
+  id         Int       @id
+  userId     Int       @map("user_id")
+  factionId  Int       @map("faction_id")
+  reputation Int       @default(0)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime? @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+
+  user    Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  faction Factions @relation(fields: [factionId], references: [id], onDelete: Cascade)
+
+  @@index([factionId])
+  @@index([userId])
+  @@map("users_factions")
+}
+
+model UsersItems {
+  id        Int       @id @unique(map: "id")
+  userId    Int       @map("user_id")
+  itemId    Int       @map("item_id")
+  quantity  Int       @default(1)
+  equipped  Boolean   @default(true)
+  bank      Boolean   @default(false)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item Items @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([itemId])
+  @@index([userId])
+  @@map("users_items")
+}

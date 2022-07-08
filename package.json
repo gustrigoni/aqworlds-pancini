@@ -1,0 +1,28 @@
+{
+  "name": "aqworlds-pancini",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gustrigoni/aqworlds-pancini.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gustrigoni/aqworlds-pancini/issues"
+  },
+  "homepage": "https://github.com/gustrigoni/aqworlds-pancini#readme",
+  "devDependencies": {
+    "prisma": "^4.0.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.0.0"
+  }
+}
