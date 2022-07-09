@@ -2,5 +2,6 @@
   "editor.tabSize": 2,
   "explorer.compactFolders": false,
   "editor.formatOnSave": true,
-  "eslint.validate": ["typescript"]
+  "eslint.validate": ["typescript"],
+  "files.eol": "\n",
 }
