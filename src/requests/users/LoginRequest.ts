@@ -1,5 +1,7 @@
-export class Login {
-  constructor() {
+import { IHandleParams } from '../interfaces/requests/IHandleParams';
+
+export class LoginRequest {
+  execute(params: IHandleParams) {
     return {
       Cmd: 'loginResponse',
       Success: true,

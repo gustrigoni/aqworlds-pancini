@@ -24,7 +24,12 @@ export class SocketHandler {
       stringSocketMessage.replace('\x00', '')
     );
 
-    return this.sendResponse(new RequestHandler(jsonSocketMessage.Cmd));
+    return this.sendResponse(
+      new RequestHandler({
+        requestName: jsonSocketMessage.Cmd,
+        params: jsonSocketMessage.Params,
+      })
+    );
   };
 
   public sendResponse = (response: string | object) => {

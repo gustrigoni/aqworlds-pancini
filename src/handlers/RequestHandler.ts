@@ -1,12 +1,14 @@
+import { camelCase } from 'camel-case';
 import { Requests } from './../requests';
+import { IRequestHandler } from './interfaces/IRequestHandler';
 
 export class RequestHandler {
-  constructor(cmd: string) {
+  constructor({ requestName, params }: IRequestHandler) {
     const requests = new Requests();
-    const request = requests[cmd];
+    const request = requests.handle(camelCase(requestName), params);
 
     if (!request) {
-      console.log('Request not found', cmd);
+      throw new Error(`Request not found - ${requestName}`);
     }
 
     return request;
