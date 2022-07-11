@@ -1,19 +1,27 @@
-import { ConnectionSocket } from 'src/utils/constants/ConnectionSocket';
+import { IConnectionSocket } from 'src/handlers/interfaces/IConnectionSocket';
 import { SocketConnetionEnum } from './enums/SocketConnetionEnum';
 import { RequestHandler } from './RequestHandler';
 
 export class SocketHandler {
-  public connection: ConnectionSocket;
+  public sockets: IConnectionSocket[] = [];
+  private connection: IConnectionSocket;
 
-  constructor(socket: ConnectionSocket) {
+  public handle(id: string, socket: IConnectionSocket) {
     this.connection = socket;
+    this.connection.id = id;
+
     this.connection.setNoDelay();
     this.connection.setDefaultEncoding('utf8');
-    this.connection.on('data', this.handlerData);
+
+    this.sockets.push(socket);
+
+    this.connection.on('data', (data) => {
+      return this.handlerData(data);
+    });
   }
 
-  private handlerData = (bufferSocketMessage: Buffer) => {
-    const stringSocketMessage = bufferSocketMessage.toString('utf-8');
+  private handlerData = (data: Buffer) => {
+    const stringSocketMessage = data.toString('utf-8');
 
     if (stringSocketMessage[0] === '<') {
       this.sendResponse(SocketConnetionEnum.CROSS_DOMAIN_POLICY);

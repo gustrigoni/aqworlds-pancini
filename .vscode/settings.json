@@ -1,7 +1,9 @@
 {
   "editor.tabSize": 2,
   "explorer.compactFolders": false,
-  "editor.formatOnSave": true,
   "eslint.validate": ["typescript"],
   "files.eol": "\n",
+  "[prisma]": {
+    "editor.formatOnSave": true,
+  }
 }

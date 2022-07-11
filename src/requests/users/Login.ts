@@ -1,6 +1,6 @@
 import { IHandleParams } from '../interfaces/requests/IHandleParams';
 
-export class LoginRequest {
+export class Login {
   execute(params: IHandleParams) {
     return {
       Cmd: 'loginResponse',
